@@ -2,7 +2,7 @@ import os
 import socket
 from typing import Optional
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -43,6 +43,10 @@ class QueryRequest(BaseModel):
     question: str
     provider: Optional[str] = "auto"
 
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(content=b"", media_type="image/x-icon")
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     local_ip = get_local_ip()
@@ -65,7 +69,7 @@ async def index(request: Request):
         context={
             "documents": docs,
             "local_ip": local_ip,
-            "port": int(os.getenv("PORT", 8080))
+            "port": int(os.getenv("PORT", 8505))
         }
     )
 
