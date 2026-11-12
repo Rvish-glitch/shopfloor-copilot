@@ -11,9 +11,9 @@ class SynthesisEngine:
         self.openai_key = os.getenv("OPENAI_API_KEY")
         self.openai_base = os.getenv("OPENAI_BASE_URL")
         self.preferred_models = [
-            "gemini-3.5-flash",
-            "gemini-3.6-flash",
-            "gemini-3.5-flash-lite"
+            "gemini-3.5-flash-lite",
+            "gemini-3.1-flash-lite",
+            "gemini-3.5-flash"
         ]
 
     def generate_answer(
@@ -44,7 +44,7 @@ class SynthesisEngine:
                 "revision_alert": None
             }
 
-        # Build revision freshness metadata
+        # Build revision freshness metadata (only show warning if document is superseded)
         top_chunk = search_results[0].chunk
         revision_alert = None
         if not top_chunk.is_active:
@@ -54,11 +54,6 @@ class SynthesisEngine:
                     f"⚠️ **Attention**: This document ({top_chunk.doc_id} {top_chunk.revision}) is **SUPERSEDED** "
                     f"by {top_chunk.superseded_by or 'a newer revision'}. Please consult the active revision for latest plant standards."
                 )
-            }
-        else:
-            revision_alert = {
-                "type": "active",
-                "message": f"✓ Verified against latest active release: **{top_chunk.doc_id} {top_chunk.revision}** (Effective: {top_chunk.effective_date})"
             }
 
         # Collect citations
@@ -137,16 +132,16 @@ class SynthesisEngine:
         context_str = "\n\n".join(context_blocks)
 
         prompt = f"""You are the BiztelAI Shop Floor Copilot for Kaveri Precision Components (Hosur Plant).
-Your job is to provide direct, accurate, actionable guidance for shift supervisors and technicians based STRICTLY on the document excerpts provided below.
+Your job is to provide direct, accurate, and complete operational guidance for shop floor supervisors and technicians based STRICTLY on the document excerpts provided below.
 
-RULES:
+INSTRUCTIONS:
 1. Answer the question directly using ONLY facts from the provided excerpts.
-2. Put critical numbers, tolerances, torque specs, alarm actions, and safety rules in **bold**.
-3. Include the exact Document ID, Revision, Section, and Page Number as a citation at the end of your answer.
-4. If the provided excerpts do NOT contain sufficient information to answer the question, state:
-   "Not found in documents. The provided plant SOPs and manuals do not contain information to answer this question."
-   Do NOT guess, assume, or extrapolate.
-5. If the document excerpt indicates it is superseded (e.g. Rev 03 superseded by Rev 04), make sure your answer reflects the active revision.
+2. Clearly state all key values, numbers, units, tolerances, torque specs, alarm actions, and safety rules in **bold**.
+3. At the end of your answer, provide the exact Document ID, Revision, Section, and Page Number as a citation.
+4. If the provided excerpts do NOT contain the information needed to answer the question, state:
+   "Not found in documents. The provided plant SOPs and manuals do not contain information regarding this request."
+   Do NOT guess, assume, or fabricate.
+5. If an excerpt indicates it is superseded (e.g. Rev 03 superseded by Rev 04), ensure your answer reflects the active revision.
 
 CONTEXT EXCERPTS:
 {context_str}
@@ -157,7 +152,7 @@ SUPERVISOR QUESTION:
 ANSWER:"""
 
         config = types.GenerateContentConfig(
-            max_output_tokens=300,
+            max_output_tokens=1000,
             temperature=0.0
         )
 

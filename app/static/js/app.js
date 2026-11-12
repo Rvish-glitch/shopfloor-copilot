@@ -44,10 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderResponse(data) {
-        // Revision Freshness Banner (Our Core Improvement)
-        if (data.revision_alert) {
+        // Revision Warning Banner (only displayed if a document is superseded)
+        if (data.revision_alert && data.revision_alert.type === "warning") {
             revisionAlertBanner.classList.remove("hidden");
-            revisionAlertBanner.className = "alert-banner " + (data.revision_alert.type === "warning" ? "superseded-revision" : "active-revision");
+            revisionAlertBanner.className = "alert-banner superseded-revision";
             revisionAlertBanner.innerHTML = formatMarkdown(data.revision_alert.message);
         } else {
             revisionAlertBanner.classList.add("hidden");
