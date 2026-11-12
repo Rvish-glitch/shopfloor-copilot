@@ -12,15 +12,26 @@ Built with **FastAPI**, **BM25 Hybrid Retrieval**, **Section-Aware Semantic Chun
 * Python 3.10+ (tested on Python 3.12)
 * Google Chrome, Safari, or any modern web browser
 
-### 2. Installation
+### 2. Installation & Configuration
 ```bash
 # Clone the repository
-git clone <your-repo-link>
-cd biztel
+git clone https://github.com/Rvish-glitch/shopfloor-copilot.git
+cd shopfloor-copilot
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Configure environment variables
+# Copy .env.example to .env and add your free Gemini API key (or OpenAI key)
+cp .env.example .env
 ```
+
+Edit `.env` and paste your Gemini API key:
+```ini
+GEMINI_API_KEY=your_gemini_api_key_here
+PORT=8505
+```
+*(You can get a free Gemini API key instantly at [aistudio.google.com](https://aistudio.google.com/)).*
 
 ### 3. Run the Copilot
 To make the application accessible both on your laptop and from any phone/tablet on the same Wi-Fi network:
