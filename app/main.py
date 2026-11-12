@@ -65,7 +65,7 @@ async def index(request: Request):
         context={
             "documents": docs,
             "local_ip": local_ip,
-            "port": 8000
+            "port": int(os.getenv("PORT", 8080))
         }
     )
 

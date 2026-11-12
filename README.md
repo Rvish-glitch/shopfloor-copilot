@@ -26,11 +26,11 @@ pip install -r requirements.txt
 To make the application accessible both on your laptop and from any phone/tablet on the same Wi-Fi network:
 
 ```bash
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8080
 ```
 
-* **Laptop Browser**: Open [http://localhost:8000](http://localhost:8000)
-* **Phone / Tablet**: Open `http://<YOUR_LOCAL_IP>:8000` (e.g. `http://10.194.167.218:8000`)
+* **Laptop Browser**: Open [http://localhost:8080](http://localhost:8080)
+* **Phone / Tablet**: Open `http://<YOUR_LOCAL_IP>:8080` (e.g. `http://10.194.167.218:8080`)
 
 ---
 
@@ -129,3 +129,4 @@ biztel/
 ├── THINKING.md              # Comprehensive strategic & technical write-up
 └── README.md                # Project documentation & answer key
 ```
+
