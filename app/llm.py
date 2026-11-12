@@ -11,9 +11,9 @@ class SynthesisEngine:
         self.openai_key = os.getenv("OPENAI_API_KEY")
         self.openai_base = os.getenv("OPENAI_BASE_URL")
         self.preferred_models = [
-            "gemini-3.1-flash-lite",
-            "gemini-3.5-flash-lite",
-            "gemini-3.8-flash"
+            "gemini-3.5-flash",
+            "gemini-3.6-flash",
+            "gemini-3.5-flash-lite"
         ]
 
     def generate_answer(
@@ -124,6 +124,7 @@ class SynthesisEngine:
 
     def _call_gemini(self, query: str, results: List[SearchResult]) -> str:
         from google import genai
+        from google.genai import types
         client = genai.Client(api_key=self.gemini_key)
 
         context_blocks = []
@@ -155,12 +156,18 @@ SUPERVISOR QUESTION:
 
 ANSWER:"""
 
+        config = types.GenerateContentConfig(
+            max_output_tokens=300,
+            temperature=0.0
+        )
+
         last_error = None
         for model_name in self.preferred_models:
             try:
                 response = client.models.generate_content(
                     model=model_name,
-                    contents=prompt
+                    contents=prompt,
+                    config=config
                 )
                 if response and response.text:
                     return response.text.strip()
