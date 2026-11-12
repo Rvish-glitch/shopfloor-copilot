@@ -78,7 +78,7 @@ async def api_query(req: QueryRequest):
     if not req.question or not req.question.strip():
         return JSONResponse(status_code=400, content={"error": "Question cannot be empty."})
 
-    results, found = rag_store.search(req.question.strip(), top_k=3)
+    results, found = rag_store.search(req.question.strip(), top_k=5)
     response_data = llm_engine.generate_answer(
         query=req.question.strip(),
         search_results=results,

@@ -308,7 +308,7 @@ class RAGStore:
             phrase_boost = 0.0
             for phrase in matched_phrases:
                 if phrase in chunk_text:
-                    phrase_boost += 8.0
+                    phrase_boost += 16.0
                     matched_terms.append(f"phrase:{phrase}")
 
             entity_boost = 0.0
@@ -325,6 +325,10 @@ class RAGStore:
                 matched_terms.append(f"machine:{machine_code}")
 
             total_score = bm25_score + phrase_boost + entity_boost
+
+            # Downweight boilerplate header/overview chunks so substantive sections outrank them
+            if chunk.section_number == "Overview" or "Header" in chunk.section_title:
+                total_score *= 0.35
 
             # Revision status boost / penalty
             if chunk.is_active:
