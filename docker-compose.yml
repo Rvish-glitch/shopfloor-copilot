@@ -1,0 +1,11 @@
+services:
+  biztel-copilot:
+    build: .
+    container_name: biztel_copilot
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BiztelAI | Shop Floor Copilot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="simple-container">
+        <!-- Minimal Header -->
+        <header class="simple-header">
+            <div class="brand-title">Biztel<strong>AI</strong> <span class="tag">Shop Floor Copilot</span></div>
+        </header>
+
+        <!-- Main Query Entry Box -->
+        <main class="query-section">
+            <form id="queryForm" class="simple-form" onsubmit="return false;">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="questionInput" 
+                        placeholder="Ask a question (e.g. AL-104 alarm, coolant concentration, bearing tolerance)..."
+                        autocomplete="off"
+                        autofocus
+                    >
+                    <button type="button" id="voiceBtn" class="mic-btn" title="Voice Search">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                    </button>
+                    <button type="submit" id="submitBtn" class="submit-btn">Ask</button>
+                </div>
+            </form>
+
+            <!-- Loading Spinner -->
+            <div id="loadingBox" class="loading-box hidden">
+                <div class="spinner"></div>
+                <span>Checking documents...</span>
+            </div>
+
+            <!-- Answer Result Section -->
+            <div id="resultCard" class="result-card hidden">
+                <!-- Revision Freshness Badge -->
+                <div id="revisionAlertBanner" class="alert-banner hidden"></div>
+
+                <!-- Answer Body -->
+                <div class="answer-container">
+                    <div id="answerBody" class="answer-body"></div>
+                </div>
+
+                <!-- Source Citation -->
+                <div id="citationsSection" class="citations-container hidden">
+                    <div class="citation-label">Source Document:</div>
+                    <div id="citationsList" class="citation-items"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
